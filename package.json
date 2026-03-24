@@ -1,0 +1,11 @@
+{
+  "name": "tunebook-v2",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "scripts": {
+    "build": "cd frontend && npm run build"
+  }
+}

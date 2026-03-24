@@ -1,0 +1,10 @@
+[package]
+name = "tunebook-v2"
+version = "0.1.0"
+
+[toolchain]
+moc = "0.14.2"
+
+[dependencies]
+base = "0.12.1"
+map = "9.0.1"

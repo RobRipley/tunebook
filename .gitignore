@@ -1,0 +1,6 @@
+node_modules/
+.icp/cache/
+.mops/
+frontend/dist/
+**/src/bindings/
+.DS_Store
