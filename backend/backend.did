@@ -1,0 +1,205 @@
+type UserProfile = 
+ record {
+   bio: opt text;
+   createdAt: Time;
+   displayName: text;
+   instruments: vec Instrument;
+   location: opt Location;
+   photo: opt text;
+ };
+type TuneType = 
+ variant {
+   barnDance;
+   hornpipe;
+   jig;
+   mazurka;
+   other: text;
+   polka;
+   reel;
+   slide;
+   slipJig;
+   waltz;
+ };
+type TuneCreateResponse = 
+ record {
+   id: nat;
+   slug: text;
+ };
+type TuneCreateRequest = 
+ record {
+   abcNotation: text;
+   key: text;
+   title: text;
+   tuneType: TuneType;
+ };
+type Tune = 
+ record {
+   alternateNames: vec AlternateName;
+   createdAt: Time;
+   id: nat;
+   key: text;
+   settings: vec Setting;
+   starredBy: vec principal;
+   thesessionId: opt nat;
+   title: text;
+   tuneType: TuneType;
+ };
+type Time = int;
+type StoredUserProfile = 
+ record {
+   knownTuneIds: vec nat;
+   "principal": principal;
+   profile: UserProfile;
+   wishListTuneIds: vec nat;
+ };
+type Setting = 
+ record {
+   abcNotation: text;
+   createdAt: Time;
+   editedAt: opt Time;
+   id: nat;
+   playedBy: vec principal;
+   previousAbcNotation: opt text;
+   starredBy: vec principal;
+   submittedBy: principal;
+ };
+type SetlistEntry = 
+ record {
+   settingId: opt nat;
+   tuneId: nat;
+ };
+type Setlist = 
+ record {
+   createdAt: Time;
+   createdBy: principal;
+   entries: vec SetlistEntry;
+   id: nat;
+   name: text;
+   sessionId: opt nat;
+   upvotedBy: vec principal;
+ };
+type SessionFrequency = 
+ variant {
+   biweekly;
+   irregular;
+   monthly;
+   weekly;
+ };
+type MusicSession = 
+ record {
+   attendees: vec principal;
+   createdAt: Time;
+   description: text;
+   difficulty: DifficultyLevel;
+   frequency: SessionFrequency;
+   id: nat;
+   isOpen: bool;
+   location: Location;
+   name: text;
+   organizer: principal;
+   starredBy: vec principal;
+   time: text;
+ };
+type Location = 
+ record {
+   city: text;
+   country: text;
+ };
+type Instrument = 
+ variant {
+   accordion;
+   banjo;
+   bodhran;
+   bouzouki;
+   concertina;
+   fiddle;
+   flute;
+   guitar;
+   harp;
+   mandolin;
+   other: text;
+   tinWhistle;
+   uilleannPipes;
+   vocals;
+ };
+type HttpResponse = 
+ record {
+   body: blob;
+   headers: vec record {
+                  name: text;
+                  value: text;
+                };
+   status: nat;
+ };
+type FriendRequestStatus = 
+ variant {
+   accepted;
+   declined;
+   pending;
+ };
+type FriendRequest = 
+ record {
+   createdAt: Time;
+   from: principal;
+   id: nat;
+   status: FriendRequestStatus;
+   to: principal;
+ };
+type DifficultyLevel = 
+ variant {
+   advanced;
+   allLevels;
+   beginner;
+   intermediate;
+ };
+type AlternateName = 
+ record {
+   createdAt: Time;
+   name: text;
+   submittedBy: principal;
+   upvotedBy: vec principal;
+ };
+service : {
+  addAlternateName: (nat, text) -> (bool);
+  addSetting: (nat, text) -> (opt nat);
+  addToWishList: (nat) -> ();
+  createSession: (text, Location, text, SessionFrequency, bool,
+   DifficultyLevel, text) -> (nat);
+  createSetlist: (text, vec SetlistEntry, opt nat) -> (nat);
+  createTune: (TuneCreateRequest) -> (TuneCreateResponse);
+  editSetting: (nat, nat, text) -> (bool);
+  fetchThesessionTune: (nat) -> (text);
+  getFriendsWhoKnowTune: (nat) -> (vec principal) query;
+  getMyFriends: () -> (vec principal) query;
+  getMyPendingRequests: () -> (vec FriendRequest) query;
+  getMyProfile: () -> (opt StoredUserProfile) query;
+  getSession: (nat) -> (opt MusicSession) query;
+  getSetlist: (nat) -> (opt Setlist) query;
+  getTopFriendTunes: () -> (vec nat) query;
+  getTune: (nat) -> (opt Tune) query;
+  getTunesInCommon: (principal) -> (vec nat) query;
+  getUserProfile: (principal) -> (opt StoredUserProfile) query;
+  importThesessionTune: (nat, text, text, TuneType, text) ->
+   (TuneCreateResponse);
+  joinSession: (nat) -> (bool);
+  listSessions: () -> (vec MusicSession) query;
+  listSetlists: () -> (vec Setlist) query;
+  listSetlistsBySession: (nat) -> (vec Setlist) query;
+  listSetlistsByUser: (principal) -> (vec Setlist) query;
+  listTunes: () -> (vec Tune) query;
+  markPlaySetting: (nat, nat) -> (bool);
+  removeFromWishList: (nat) -> ();
+  respondToFriendRequest: (nat, bool) -> (bool);
+  saveMyProfile: (UserProfile) -> ();
+  searchThesessionTunes: (text, opt text, nat) -> (text);
+  sendFriendRequest: (principal) -> (nat);
+  starSession: (nat) -> (bool);
+  starTune: (nat) -> (bool);
+  transform: (record {
+                context: blob;
+                response: HttpResponse;
+              }) -> (HttpResponse) query;
+  unstarTune: (nat) -> (bool);
+  upvoteAlternateName: (nat, text) -> (bool);
+  upvoteSetlist: (nat) -> (bool);
+}
