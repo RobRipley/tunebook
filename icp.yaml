@@ -11,4 +11,5 @@ canisters:
       configuration:
         dir: frontend/dist
         build:
-          - cd frontend && npm install && npm run build
+          - npm install --prefix frontend
+          - npm run build --prefix frontend
