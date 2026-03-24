@@ -152,7 +152,10 @@ export function TunesPage() {
       {/* Page header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-stone-900 dark:text-parchment-50">Tunes</h1>
+          <h1 className="font-display text-2xl font-bold text-stone-900 dark:text-parchment-50 flex items-center gap-2">
+            <span className="inline-block w-1 h-6 bg-moss-500 dark:bg-moss-400 rounded-full" aria-hidden="true" />
+            Tunes
+          </h1>
           <p className="mt-1 text-sm text-stone-500 dark:text-stone-400 font-body">
             Browse, search, and build your collection of traditional tunes.
           </p>
@@ -241,7 +244,7 @@ export function TunesPage() {
           {/* Empty state */}
           {!tunesLoading && filteredTunes.length === 0 && (
             <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-parchment-300 dark:border-stone-700 py-16 text-center">
-              <Music className="mb-3 text-stone-300 dark:text-stone-600" size={40} />
+              <Music className="mb-3 text-moss-400 dark:text-moss-600" size={40} />
               <h3 className="font-display text-lg font-semibold text-stone-700 dark:text-stone-300">
                 {searchQuery || typeFilter || keyFilter
                   ? "No tunes match your search"
@@ -316,7 +319,7 @@ export function TunesPage() {
           {/* Empty / initial state */}
           {!sessionLoading && !sessionResults?.tunes?.length && (
             <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-parchment-300 dark:border-stone-700 py-16 text-center">
-              <Search className="mb-3 text-stone-300 dark:text-stone-600" size={40} />
+              <Search className="mb-3 text-moss-400 dark:text-moss-600" size={40} />
               <h3 className="font-display text-lg font-semibold text-stone-700 dark:text-stone-300">
                 {sessionSearch.length > 1 ? "No results found" : "Search TheSession.org"}
               </h3>

@@ -30,7 +30,7 @@ export function TuneCard({ tune, starred, onToggleStar }: TuneCardProps) {
         }
       }}
       className={cn(
-        "group relative rounded-lg border border-parchment-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4 shadow-card cursor-pointer",
+        "group relative rounded-lg border border-parchment-200 dark:border-stone-800 border-l-[3px] border-l-moss-300 dark:border-l-moss-700 bg-white dark:bg-stone-900 p-4 shadow-card cursor-pointer",
         "transition-all duration-200 motion-reduce:transition-none hover:shadow-card-hover hover:-translate-y-0.5",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-stone-950"
       )}

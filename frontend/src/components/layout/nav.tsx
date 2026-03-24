@@ -33,7 +33,7 @@ export function Nav() {
           >
             {item.label}
             {isActive && (
-              <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-moss-500 dark:bg-moss-400 rounded-full" />
+              <span className="absolute bottom-0 left-2 right-2 h-[3px] bg-moss-500 dark:bg-moss-400 rounded-full" />
             )}
           </Link>
         );

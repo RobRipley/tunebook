@@ -63,7 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       identityProvider:
         canisterEnv?.["PUBLIC_CANISTER_ID:internet_identity"]
           ? `http://${canisterEnv["PUBLIC_CANISTER_ID:internet_identity"]}.localhost:8000`
-          : "https://identity.ic0.app",
+          : "https://id.ai",
       onSuccess: () => {
         setIsAuthenticated(true);
         const id = authClient.getIdentity();

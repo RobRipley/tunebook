@@ -6,7 +6,9 @@ export function LoginScreen() {
   const { login, isLoading } = useAuth();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-parchment-50 via-parchment-100 to-parchment-200 dark:from-stone-950 dark:via-stone-900 dark:to-stone-950 px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-parchment-50 via-parchment-100 to-parchment-200 dark:from-stone-950 dark:via-stone-900 dark:to-stone-950 px-4 relative overflow-hidden">
+      {/* Subtle moss-green radial glow */}
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-moss-200/30 dark:bg-moss-900/20 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
       {/* Decorative staff lines */}
       <div className="absolute top-1/4 left-0 right-0 opacity-[0.04] pointer-events-none select-none" aria-hidden="true">
         <div className="max-w-2xl mx-auto flex flex-col gap-[6px]">
