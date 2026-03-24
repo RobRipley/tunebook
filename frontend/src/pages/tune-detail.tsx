@@ -166,10 +166,10 @@ export function TuneDetailPage() {
   if (isError || !tune) {
     return (
       <div className="flex flex-col items-center justify-center py-24 text-center">
-        <h2 className="font-display text-xl font-bold text-stone-800">
+        <h2 className="font-display text-xl font-bold text-stone-800 dark:text-stone-200">
           Tune not found
         </h2>
-        <p className="mt-2 text-sm text-stone-500 font-body">
+        <p className="mt-2 text-sm text-stone-500 dark:text-stone-400 font-body">
           This tune may have been removed or the ID is invalid.
         </p>
         <Button
@@ -194,7 +194,7 @@ export function TuneDetailPage() {
       <button
         type="button"
         onClick={() => navigate({ to: "/" })}
-        className="inline-flex items-center gap-1.5 text-sm text-stone-500 font-body hover:text-stone-700 transition-colors cursor-pointer"
+        className="inline-flex items-center gap-1.5 text-sm text-stone-500 dark:text-stone-400 font-body hover:text-stone-700 dark:hover:text-stone-200 transition-colors motion-reduce:transition-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500 rounded-sm"
       >
         <ArrowLeft size={14} />
         Back to tunes
@@ -209,10 +209,10 @@ export function TuneDetailPage() {
             onToggle={handleToggleStar}
           />
           <div className="min-w-0 flex-1">
-            <h1 className="font-display text-3xl font-bold text-stone-900 leading-tight">
+            <h1 className="font-display text-3xl font-bold text-stone-900 dark:text-parchment-50 leading-tight">
               {tune.title}
             </h1>
-            <p className="mt-1 text-base text-stone-600 font-body">
+            <p className="mt-1 text-base text-stone-600 dark:text-stone-400 font-body">
               {formatTuneType(tuneTypeKind)} in {formatKey(tune.key)}
             </p>
           </div>
@@ -220,7 +220,7 @@ export function TuneDetailPage() {
 
         {/* Stat chips */}
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-parchment-200 px-3 py-1 text-xs font-medium text-stone-600 font-body">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-parchment-200 dark:bg-stone-800 px-3 py-1 text-xs font-medium text-stone-600 dark:text-stone-300 font-body">
             <BookOpen size={13} />
             In {tune.starredBy.length}{" "}
             {tune.starredBy.length === 1 ? "tunebook" : "tunebooks"}
@@ -230,11 +230,11 @@ export function TuneDetailPage() {
         {/* Also known as (inline preview) */}
         {tune.alternateNames.length > 0 && (
           <div className="mt-3 flex flex-wrap items-center gap-2 text-sm font-body">
-            <span className="text-stone-500">Also known as:</span>
+            <span className="text-stone-500 dark:text-stone-400">Also known as:</span>
             {topAltNames.map((alt) => (
               <span
                 key={alt.name}
-                className="inline-block rounded-full bg-parchment-100 border border-parchment-200 px-2.5 py-0.5 text-xs text-stone-600"
+                className="inline-block rounded-full bg-parchment-100 dark:bg-stone-800 border border-parchment-200 dark:border-stone-700 px-2.5 py-0.5 text-xs text-stone-600 dark:text-stone-300"
               >
                 {alt.name}
               </span>
@@ -243,7 +243,7 @@ export function TuneDetailPage() {
               <button
                 type="button"
                 onClick={() => setShowAllNames(true)}
-                className="text-xs text-moss-600 hover:text-moss-700 font-medium cursor-pointer"
+                className="text-xs text-moss-600 dark:text-moss-400 hover:text-moss-700 dark:hover:text-moss-300 font-medium cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500 rounded-sm"
               >
                 Show all ({tune.alternateNames.length})
               </button>
@@ -256,10 +256,10 @@ export function TuneDetailPage() {
       <section>
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="font-display text-xl font-semibold text-stone-900">
+            <h2 className="font-display text-xl font-semibold text-stone-900 dark:text-parchment-50">
               Settings
             </h2>
-            <p className="mt-0.5 text-xs text-stone-500 font-body">
+            <p className="mt-0.5 text-xs text-stone-500 dark:text-stone-400 font-body">
               Different arrangements and transcriptions of this tune
             </p>
           </div>
@@ -292,8 +292,8 @@ export function TuneDetailPage() {
           ))}
 
           {sortedSettings.length === 0 && (
-            <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-parchment-300 py-12 text-center">
-              <p className="text-sm text-stone-500 font-body">
+            <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-parchment-300 dark:border-stone-700 py-12 text-center">
+              <p className="text-sm text-stone-500 dark:text-stone-400 font-body">
                 No settings yet. Be the first to add one.
               </p>
               <Button
@@ -312,13 +312,13 @@ export function TuneDetailPage() {
 
       {/* ---- Alternate Names Section ---- */}
       <section>
-        <h2 className="font-display text-xl font-semibold text-stone-900">
+        <h2 className="font-display text-xl font-semibold text-stone-900 dark:text-parchment-50">
           Alternate Names
         </h2>
 
         <div className="mt-3 space-y-2">
           {tune.alternateNames.length === 0 && (
-            <p className="text-sm text-stone-500 font-body">
+            <p className="text-sm text-stone-500 dark:text-stone-400 font-body">
               No alternate names have been proposed yet.
             </p>
           )}
@@ -327,13 +327,13 @@ export function TuneDetailPage() {
             (alt) => (
               <div
                 key={alt.name}
-                className="flex items-center justify-between rounded-lg border border-parchment-200 bg-white px-4 py-2.5"
+                className="flex items-center justify-between rounded-lg border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 px-4 py-2.5"
               >
-                <span className="text-sm font-medium text-stone-800 font-body">
+                <span className="text-sm font-medium text-stone-800 dark:text-stone-200 font-body">
                   {alt.name}
                 </span>
                 <div className="flex items-center gap-3">
-                  <span className="text-xs text-stone-500 font-body">
+                  <span className="text-xs text-stone-500 dark:text-stone-400 font-body">
                     {alt.upvotedBy.length}{" "}
                     {alt.upvotedBy.length === 1 ? "upvote" : "upvotes"}
                   </span>
@@ -341,9 +341,9 @@ export function TuneDetailPage() {
                     type="button"
                     onClick={() => handleUpvoteName(alt.name)}
                     className={cn(
-                      "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium font-body transition-colors cursor-pointer",
+                      "inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium font-body transition-colors motion-reduce:transition-none cursor-pointer",
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500",
-                      "border border-stone-300 text-stone-600 hover:bg-parchment-100"
+                      "border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 hover:bg-parchment-100 dark:hover:bg-stone-800"
                     )}
                   >
                     <ChevronUp size={14} />
@@ -362,7 +362,7 @@ export function TuneDetailPage() {
             value={newAltName}
             onChange={(e) => setNewAltName(e.target.value)}
             placeholder="Propose an alternate name..."
-            className="flex-1 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+            className="flex-1 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 px-3 py-2 text-sm text-stone-800 dark:text-stone-200 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
             onKeyDown={(e) => {
               if (e.key === "Enter") handleAddAltName();
             }}
@@ -380,23 +380,24 @@ export function TuneDetailPage() {
 
       {/* ---- Add Setting Modal ---- */}
       {addSettingOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="relative mx-4 w-full max-w-lg rounded-xl border border-parchment-200 bg-white p-6 shadow-xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 dark:bg-black/60">
+          <div className="relative w-full max-w-lg rounded-xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-6 shadow-xl">
             <button
               type="button"
               onClick={() => {
                 setAddSettingOpen(false);
                 setNewAbc("");
               }}
-              className="absolute right-4 top-4 text-stone-400 hover:text-stone-600 transition-colors cursor-pointer"
+              aria-label="Close dialog"
+              className="absolute right-4 top-4 text-stone-400 dark:text-stone-500 hover:text-stone-600 dark:hover:text-stone-300 transition-colors motion-reduce:transition-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500 rounded-sm"
             >
               <X size={20} />
             </button>
 
-            <h3 className="font-display text-lg font-semibold text-stone-900">
+            <h3 className="font-display text-lg font-semibold text-stone-900 dark:text-parchment-50">
               Add a Setting
             </h3>
-            <p className="mt-1 text-sm text-stone-500 font-body">
+            <p className="mt-1 text-sm text-stone-500 dark:text-stone-400 font-body">
               Paste ABC notation for this tune.
             </p>
 
@@ -405,7 +406,7 @@ export function TuneDetailPage() {
               onChange={(e) => setNewAbc(e.target.value)}
               placeholder={`X:1\nT:${tune.title}\nM:4/4\nK:${tune.key}\n...`}
               rows={10}
-              className="mt-4 w-full rounded-lg border border-stone-300 bg-parchment-50 px-3 py-2 font-mono text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20"
+              className="mt-4 w-full rounded-lg border border-stone-300 dark:border-stone-600 bg-parchment-50 dark:bg-stone-800 px-3 py-2 font-mono text-sm text-stone-800 dark:text-stone-200 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20"
             />
 
             <div className="mt-4 flex justify-end gap-2">

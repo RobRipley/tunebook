@@ -24,15 +24,16 @@ export function Nav() {
             key={item.to}
             to={item.to}
             className={cn(
-              "px-3 py-2 text-sm font-medium font-body rounded-md transition-colors relative",
+              "px-3 py-2 text-sm font-medium font-body rounded-md transition-colors motion-reduce:transition-none relative",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500 focus-visible:ring-offset-2",
               isActive
-                ? "text-moss-700"
-                : "text-stone-600 hover:text-stone-900 hover:bg-parchment-100"
+                ? "text-moss-700 dark:text-moss-400"
+                : "text-stone-600 hover:text-stone-900 hover:bg-parchment-100 dark:text-stone-400 dark:hover:text-stone-100 dark:hover:bg-stone-800"
             )}
           >
             {item.label}
             {isActive && (
-              <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-moss-500 rounded-full" />
+              <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-moss-500 dark:bg-moss-400 rounded-full" />
             )}
           </Link>
         );

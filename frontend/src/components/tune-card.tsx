@@ -30,9 +30,9 @@ export function TuneCard({ tune, starred, onToggleStar }: TuneCardProps) {
         }
       }}
       className={cn(
-        "group relative rounded-lg border border-parchment-200 bg-white p-4 shadow-card cursor-pointer",
-        "transition-all duration-200 hover:shadow-card-hover hover:-translate-y-0.5",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500 focus-visible:ring-offset-2"
+        "group relative rounded-lg border border-parchment-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4 shadow-card cursor-pointer",
+        "transition-all duration-200 motion-reduce:transition-none hover:shadow-card-hover hover:-translate-y-0.5",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-stone-950"
       )}
     >
       {/* Header: Star + Title + Badge */}
@@ -44,15 +44,15 @@ export function TuneCard({ tune, starred, onToggleStar }: TuneCardProps) {
           size="sm"
         />
         <div className="min-w-0 flex-1">
-          <h3 className="font-display text-base font-semibold text-stone-900 leading-snug truncate">
+          <h3 className="font-display text-base font-semibold text-stone-900 dark:text-parchment-50 leading-snug truncate">
             {tune.title}
           </h3>
           <div className="mt-1 flex flex-wrap items-center gap-2">
-            <span className="inline-block rounded-full bg-parchment-200 px-2.5 py-0.5 text-xs font-medium text-stone-600 font-body">
+            <span className="inline-block rounded-full bg-parchment-200 dark:bg-stone-800 px-2.5 py-0.5 text-xs font-medium text-stone-600 dark:text-stone-300 font-body">
               {tuneTypeLabel}
             </span>
             {keyLabel && (
-              <span className="text-xs text-stone-500 font-body">{keyLabel}</span>
+              <span className="text-xs text-stone-500 dark:text-stone-400 font-body">{keyLabel}</span>
             )}
           </div>
         </div>
@@ -60,13 +60,13 @@ export function TuneCard({ tune, starred, onToggleStar }: TuneCardProps) {
 
       {/* ABC Preview */}
       {firstAbc && (
-        <div className="mt-3 overflow-hidden rounded border border-parchment-100 bg-parchment-50 px-2 py-1">
+        <div className="mt-3 overflow-hidden rounded border border-parchment-100 dark:border-stone-700 bg-parchment-50 dark:bg-stone-800 px-2 py-1">
           <AbcRenderer abc={firstAbc} preview />
         </div>
       )}
 
       {/* Footer metadata */}
-      <div className="mt-3 flex items-center gap-3 text-xs text-stone-400 font-body">
+      <div className="mt-3 flex items-center gap-3 text-xs text-stone-400 dark:text-stone-500 font-body">
         {tune.settings.length > 0 && (
           <span className="inline-flex items-center gap-1">
             <Music size={12} />
@@ -74,7 +74,7 @@ export function TuneCard({ tune, starred, onToggleStar }: TuneCardProps) {
           </span>
         )}
         {tune.thesessionId !== undefined && tune.thesessionId !== null && (
-          <span className="text-stone-300">TheSession #{tune.thesessionId.toString()}</span>
+          <span className="text-stone-300 dark:text-stone-600">TheSession #{tune.thesessionId.toString()}</span>
         )}
       </div>
     </div>

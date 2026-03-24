@@ -144,13 +144,16 @@ export function TunesPage() {
     [importTune, navigate]
   );
 
+  const inputClass = "w-full rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 py-2 pl-9 pr-3 text-sm text-stone-800 dark:text-stone-200 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body";
+  const selectClass = "rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 px-3 py-2 text-sm text-stone-700 dark:text-stone-300 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body cursor-pointer";
+
   return (
     <div className="space-y-6">
       {/* Page header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-stone-900">Tunes</h1>
-          <p className="mt-1 text-sm text-stone-500 font-body">
+          <h1 className="font-display text-2xl font-bold text-stone-900 dark:text-parchment-50">Tunes</h1>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400 font-body">
             Browse, search, and build your collection of traditional tunes.
           </p>
         </div>
@@ -161,16 +164,17 @@ export function TunesPage() {
       </div>
 
       {/* Tabs */}
-      <div className="border-b border-parchment-200">
+      <div className="border-b border-parchment-200 dark:border-stone-800">
         <nav className="-mb-px flex gap-6" aria-label="Tabs">
           <button
             type="button"
             onClick={() => setActiveTab("tunebook")}
             className={cn(
-              "pb-3 text-sm font-medium font-body transition-colors border-b-2 cursor-pointer",
+              "pb-3 text-sm font-medium font-body transition-colors motion-reduce:transition-none border-b-2 cursor-pointer",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500",
               activeTab === "tunebook"
-                ? "border-moss-600 text-moss-700"
-                : "border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300"
+                ? "border-moss-600 text-moss-700 dark:border-moss-400 dark:text-moss-400"
+                : "border-transparent text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:border-stone-300 dark:hover:border-stone-600"
             )}
           >
             Tunebook
@@ -179,10 +183,11 @@ export function TunesPage() {
             type="button"
             onClick={() => setActiveTab("thesession")}
             className={cn(
-              "pb-3 text-sm font-medium font-body transition-colors border-b-2 cursor-pointer inline-flex items-center gap-1.5",
+              "pb-3 text-sm font-medium font-body transition-colors motion-reduce:transition-none border-b-2 cursor-pointer inline-flex items-center gap-1.5",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500",
               activeTab === "thesession"
-                ? "border-moss-600 text-moss-700"
-                : "border-transparent text-stone-500 hover:text-stone-700 hover:border-stone-300"
+                ? "border-moss-600 text-moss-700 dark:border-moss-400 dark:text-moss-400"
+                : "border-transparent text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 hover:border-stone-300 dark:hover:border-stone-600"
             )}
           >
             TheSession.org
@@ -197,19 +202,19 @@ export function TunesPage() {
           {/* Search + Filters */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" size={16} />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500" size={16} />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search tunes..."
-                className="w-full rounded-lg border border-stone-300 bg-white py-2 pl-9 pr-3 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+                className={inputClass}
               />
             </div>
             <select
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
-              className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body cursor-pointer"
+              className={selectClass}
             >
               {TUNE_TYPE_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -218,7 +223,7 @@ export function TunesPage() {
             <select
               value={keyFilter}
               onChange={(e) => setKeyFilter(e.target.value)}
-              className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body cursor-pointer"
+              className={selectClass}
             >
               {KEY_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -235,14 +240,14 @@ export function TunesPage() {
 
           {/* Empty state */}
           {!tunesLoading && filteredTunes.length === 0 && (
-            <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-parchment-300 py-16 text-center">
-              <Music className="mb-3 text-stone-300" size={40} />
-              <h3 className="font-display text-lg font-semibold text-stone-700">
+            <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-parchment-300 dark:border-stone-700 py-16 text-center">
+              <Music className="mb-3 text-stone-300 dark:text-stone-600" size={40} />
+              <h3 className="font-display text-lg font-semibold text-stone-700 dark:text-stone-300">
                 {searchQuery || typeFilter || keyFilter
                   ? "No tunes match your search"
                   : "Your tunebook is empty"}
               </h3>
-              <p className="mt-1 max-w-sm text-sm text-stone-500 font-body">
+              <p className="mt-1 max-w-sm text-sm text-stone-500 dark:text-stone-400 font-body">
                 {searchQuery || typeFilter || keyFilter
                   ? "Try adjusting your filters or search terms."
                   : "Start building your collection by adding a tune or searching TheSession.org."}
@@ -281,19 +286,19 @@ export function TunesPage() {
           {/* Session Search */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400" size={16} />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500" size={16} />
               <input
                 type="text"
                 value={sessionSearch}
                 onChange={(e) => setSessionSearch(e.target.value)}
                 placeholder="Search TheSession.org..."
-                className="w-full rounded-lg border border-stone-300 bg-white py-2 pl-9 pr-3 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+                className={inputClass}
               />
             </div>
             <select
               value={sessionTypeFilter}
               onChange={(e) => setSessionTypeFilter(e.target.value)}
-              className="rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body cursor-pointer"
+              className={selectClass}
             >
               {TUNE_TYPE_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -310,12 +315,12 @@ export function TunesPage() {
 
           {/* Empty / initial state */}
           {!sessionLoading && !sessionResults?.tunes?.length && (
-            <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-parchment-300 py-16 text-center">
-              <Search className="mb-3 text-stone-300" size={40} />
-              <h3 className="font-display text-lg font-semibold text-stone-700">
+            <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-parchment-300 dark:border-stone-700 py-16 text-center">
+              <Search className="mb-3 text-stone-300 dark:text-stone-600" size={40} />
+              <h3 className="font-display text-lg font-semibold text-stone-700 dark:text-stone-300">
                 {sessionSearch.length > 1 ? "No results found" : "Search TheSession.org"}
               </h3>
-              <p className="mt-1 max-w-sm text-sm text-stone-500 font-body">
+              <p className="mt-1 max-w-sm text-sm text-stone-500 dark:text-stone-400 font-body">
                 {sessionSearch.length > 1
                   ? "Try different search terms or tune type."
                   : "Find tunes from the world's largest collection of traditional music."}
@@ -329,23 +334,23 @@ export function TunesPage() {
               {sessionResults.tunes.map((tune: { id: number; name: string; type: string; settings?: Array<{ key: string; abc: string }> }) => (
                 <div
                   key={tune.id}
-                  className="rounded-lg border border-parchment-200 bg-white p-4 shadow-card transition-all duration-200 hover:shadow-card-hover"
+                  className="rounded-lg border border-parchment-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4 shadow-card transition-all duration-200 motion-reduce:transition-none hover:shadow-card-hover"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-display text-base font-semibold text-stone-900">
+                      <h3 className="font-display text-base font-semibold text-stone-900 dark:text-parchment-50">
                         {tune.name}
                       </h3>
                       <div className="mt-1 flex items-center gap-2">
-                        <span className="inline-block rounded-full bg-parchment-200 px-2.5 py-0.5 text-xs font-medium text-stone-600 font-body capitalize">
+                        <span className="inline-block rounded-full bg-parchment-200 dark:bg-stone-800 px-2.5 py-0.5 text-xs font-medium text-stone-600 dark:text-stone-300 font-body capitalize">
                           {tune.type}
                         </span>
                         {tune.settings?.[0]?.key && (
-                          <span className="text-xs text-stone-500 font-body">
+                          <span className="text-xs text-stone-500 dark:text-stone-400 font-body">
                             {formatKey(tune.settings[0].key)}
                           </span>
                         )}
-                        <span className="text-xs text-stone-400 font-body">
+                        <span className="text-xs text-stone-400 dark:text-stone-500 font-body">
                           #{tune.id}
                         </span>
                       </div>
@@ -361,7 +366,7 @@ export function TunesPage() {
                     </Button>
                   </div>
                   {tune.settings?.[0]?.abc && (
-                    <div className="mt-3 overflow-hidden rounded border border-parchment-100 bg-parchment-50 px-2 py-1">
+                    <div className="mt-3 overflow-hidden rounded border border-parchment-100 dark:border-stone-700 bg-parchment-50 dark:bg-stone-800 px-2 py-1">
                       <AbcRenderer abc={tune.settings[0].abc} preview />
                     </div>
                   )}

@@ -47,20 +47,20 @@ export function SettingCard({
   const playCount = setting.playedBy.length;
 
   return (
-    <div className="rounded-xl border border-parchment-200 bg-parchment-50 p-1.5 shadow-card transition-all duration-200 hover:shadow-card-hover">
+    <div className="rounded-xl border border-parchment-200 dark:border-stone-800 bg-parchment-50 dark:bg-stone-900 p-1.5 shadow-card transition-all duration-200 motion-reduce:transition-none hover:shadow-card-hover">
       {/* Inner card */}
-      <div className="rounded-lg border border-parchment-200 bg-white p-4 sm:p-5">
+      <div className="rounded-lg border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-4 sm:p-5">
         {/* Metadata line */}
-        <div className="flex flex-wrap items-center gap-2 text-xs text-stone-500 font-body">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-stone-500 dark:text-stone-400 font-body">
           <span>
             Added by{" "}
-            <span className="font-medium text-stone-600">
+            <span className="font-medium text-stone-600 dark:text-stone-300">
               {truncatePrincipal(setting.submittedBy.toText())}
             </span>{" "}
             on {formatDate(setting.createdAt)}
           </span>
           {setting.editedAt && (
-            <span className="text-stone-400">
+            <span className="text-stone-400 dark:text-stone-500">
               (edited {formatDate(setting.editedAt)})
             </span>
           )}
@@ -69,27 +69,28 @@ export function SettingCard({
         {/* Badges */}
         <div className="mt-2 flex flex-wrap gap-2">
           {isCommunityMain && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-moss-100 px-2.5 py-0.5 text-xs font-medium text-moss-700 font-body">
+            <span className="inline-flex items-center gap-1 rounded-full bg-moss-100 dark:bg-moss-900 px-2.5 py-0.5 text-xs font-medium text-moss-700 dark:text-moss-400 font-body">
               Community main
             </span>
           )}
           {isOwnSetting && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-parchment-200 px-2.5 py-0.5 text-xs font-medium text-stone-600 font-body">
+            <span className="inline-flex items-center gap-1 rounded-full bg-parchment-200 dark:bg-stone-800 px-2.5 py-0.5 text-xs font-medium text-stone-600 dark:text-stone-300 font-body">
               Your setting
             </span>
           )}
         </div>
 
         {/* View toggle */}
-        <div className="mt-3 inline-flex rounded-full bg-parchment-100 p-0.5">
+        <div className="mt-3 inline-flex rounded-full bg-parchment-100 dark:bg-stone-800 p-0.5">
           <button
             type="button"
             onClick={() => setViewMode("sheet")}
             className={cn(
-              "rounded-full px-3 py-1 text-xs font-medium font-body transition-colors cursor-pointer",
+              "rounded-full px-3 py-1 text-xs font-medium font-body transition-colors motion-reduce:transition-none cursor-pointer",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500",
               viewMode === "sheet"
-                ? "bg-white text-stone-800 shadow-sm"
-                : "text-stone-500 hover:text-stone-700"
+                ? "bg-white dark:bg-stone-700 text-stone-800 dark:text-parchment-100 shadow-sm"
+                : "text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
             )}
           >
             Sheet music
@@ -98,10 +99,11 @@ export function SettingCard({
             type="button"
             onClick={() => setViewMode("abc")}
             className={cn(
-              "rounded-full px-3 py-1 text-xs font-medium font-body transition-colors cursor-pointer",
+              "rounded-full px-3 py-1 text-xs font-medium font-body transition-colors motion-reduce:transition-none cursor-pointer",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500",
               viewMode === "abc"
-                ? "bg-white text-stone-800 shadow-sm"
-                : "text-stone-500 hover:text-stone-700"
+                ? "bg-white dark:bg-stone-700 text-stone-800 dark:text-parchment-100 shadow-sm"
+                : "text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200"
             )}
           >
             ABC notation
@@ -109,11 +111,11 @@ export function SettingCard({
         </div>
 
         {/* Content area */}
-        <div className="mt-3 rounded-lg border border-parchment-100 bg-parchment-50 p-3">
+        <div className="mt-3 rounded-lg border border-parchment-100 dark:border-stone-700 bg-parchment-50 dark:bg-stone-800 p-3">
           {viewMode === "sheet" ? (
             <AbcRenderer abc={setting.abcNotation} />
           ) : (
-            <pre className="whitespace-pre-wrap break-all font-mono text-sm text-stone-700 leading-relaxed">
+            <pre className="whitespace-pre-wrap break-all font-mono text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
               {setting.abcNotation}
             </pre>
           )}
@@ -126,21 +128,21 @@ export function SettingCard({
             onClick={onTogglePlay}
             disabled={isToggling}
             className={cn(
-              "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-body font-medium transition-all cursor-pointer",
+              "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-body font-medium transition-all motion-reduce:transition-none cursor-pointer",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500 focus-visible:ring-offset-1",
               isPlayed
-                ? "bg-moss-100 text-moss-700 hover:bg-moss-200"
-                : "border border-stone-300 text-stone-600 hover:bg-parchment-100"
+                ? "bg-moss-100 dark:bg-moss-900 text-moss-700 dark:text-moss-400 hover:bg-moss-200 dark:hover:bg-moss-800"
+                : "border border-stone-300 dark:border-stone-600 text-stone-600 dark:text-stone-300 hover:bg-parchment-100 dark:hover:bg-stone-800"
             )}
           >
             {isPlayed ? (
-              <Check size={16} className="text-moss-600" />
+              <Check size={16} className="text-moss-600 dark:text-moss-400" />
             ) : (
-              <Circle size={16} className="text-stone-400" />
+              <Circle size={16} className="text-stone-400 dark:text-stone-500" />
             )}
             I play this setting
           </button>
-          <span className="inline-flex items-center gap-1.5 text-xs text-stone-500 font-body">
+          <span className="inline-flex items-center gap-1.5 text-xs text-stone-500 dark:text-stone-400 font-body">
             <Users size={14} />
             {playCount} {playCount === 1 ? "musician plays" : "musicians play"} this
           </span>

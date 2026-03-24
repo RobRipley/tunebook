@@ -29,11 +29,11 @@ function difficultyLabel(d: DifficultyLevel): string {
 
 function difficultyColor(d: DifficultyLevel): string {
   switch (d) {
-    case DifficultyLevel.beginner: return "bg-emerald-100 text-emerald-700";
-    case DifficultyLevel.intermediate: return "bg-amber-100 text-amber-700";
-    case DifficultyLevel.advanced: return "bg-red-100 text-red-700";
-    case DifficultyLevel.allLevels: return "bg-parchment-200 text-stone-700";
-    default: return "bg-parchment-200 text-stone-700";
+    case DifficultyLevel.beginner: return "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400";
+    case DifficultyLevel.intermediate: return "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400";
+    case DifficultyLevel.advanced: return "bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400";
+    case DifficultyLevel.allLevels: return "bg-parchment-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300";
+    default: return "bg-parchment-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300";
   }
 }
 
@@ -100,7 +100,7 @@ export function SessionDetailPage() {
   if (!session) {
     return (
       <div className="text-center py-20">
-        <p className="text-stone-500 font-body">Session not found.</p>
+        <p className="text-stone-500 dark:text-stone-400 font-body">Session not found.</p>
         <Button variant="outline" className="mt-4 gap-2" onClick={() => navigate({ to: "/sessions" })}>
           <ArrowLeft size={14} />
           Back to Sessions
@@ -115,18 +115,18 @@ export function SessionDetailPage() {
       <button
         type="button"
         onClick={() => navigate({ to: "/sessions" })}
-        className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-700 transition-colors font-body cursor-pointer"
+        className="inline-flex items-center gap-1.5 text-sm text-stone-500 dark:text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition-colors motion-reduce:transition-none font-body cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500 rounded-sm"
       >
         <ArrowLeft size={14} />
         Back to Sessions
       </button>
 
       {/* Header */}
-      <div className="rounded-xl border border-parchment-200 bg-white p-6 shadow-card">
+      <div className="rounded-xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-6 shadow-card">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="font-display text-2xl font-bold text-stone-900">{session.name}</h1>
+              <h1 className="font-display text-2xl font-bold text-stone-900 dark:text-parchment-50">{session.name}</h1>
               <span
                 className={cn(
                   "rounded-full px-2.5 py-0.5 text-xs font-medium font-body",
@@ -139,8 +139,8 @@ export function SessionDetailPage() {
                 className={cn(
                   "inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium font-body",
                   session.isOpen
-                    ? "bg-moss-100 text-moss-700"
-                    : "bg-stone-100 text-stone-600"
+                    ? "bg-moss-100 dark:bg-moss-900/40 text-moss-700 dark:text-moss-400"
+                    : "bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300"
                 )}
               >
                 {session.isOpen ? <Unlock size={10} /> : <Lock size={10} />}
@@ -148,7 +148,7 @@ export function SessionDetailPage() {
               </span>
             </div>
 
-            <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-stone-500 font-body">
+            <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-stone-500 dark:text-stone-400 font-body">
               <span className="inline-flex items-center gap-1.5">
                 <MapPin size={14} />
                 {session.location.city}, {session.location.country}
@@ -164,7 +164,7 @@ export function SessionDetailPage() {
             </div>
 
             {session.description && (
-              <p className="mt-3 text-sm text-stone-600 font-body leading-relaxed">
+              <p className="mt-3 text-sm text-stone-600 dark:text-stone-400 font-body leading-relaxed">
                 {session.description}
               </p>
             )}
@@ -187,7 +187,7 @@ export function SessionDetailPage() {
             </Button>
           )}
           {isAttending && (
-            <span className="inline-flex items-center gap-1.5 rounded-lg bg-moss-50 border border-moss-200 px-3 py-1.5 text-sm font-medium text-moss-700 font-body">
+            <span className="inline-flex items-center gap-1.5 rounded-lg bg-moss-50 dark:bg-moss-900/40 border border-moss-200 dark:border-moss-700 px-3 py-1.5 text-sm font-medium text-moss-700 dark:text-moss-400 font-body">
               <Users size={14} />
               You're attending
             </span>
@@ -196,22 +196,22 @@ export function SessionDetailPage() {
       </div>
 
       {/* Attendees */}
-      <div className="rounded-xl border border-parchment-200 bg-white p-5 shadow-card">
-        <h2 className="font-display text-lg font-semibold text-stone-900 mb-4 flex items-center gap-2">
-          <Users size={18} className="text-moss-600" />
+      <div className="rounded-xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-5 shadow-card">
+        <h2 className="font-display text-lg font-semibold text-stone-900 dark:text-parchment-50 mb-4 flex items-center gap-2">
+          <Users size={18} className="text-moss-600 dark:text-moss-400" />
           Attendees
-          <span className="ml-auto rounded-full bg-parchment-100 px-2 py-0.5 text-xs font-medium text-stone-500 font-body">
+          <span className="ml-auto rounded-full bg-parchment-100 dark:bg-stone-800 px-2 py-0.5 text-xs font-medium text-stone-500 dark:text-stone-400 font-body">
             {session.attendees.length}
           </span>
         </h2>
         {session.attendees.length === 0 ? (
-          <p className="text-sm text-stone-400 italic font-body">No attendees yet. Be the first to join!</p>
+          <p className="text-sm text-stone-400 dark:text-stone-500 italic font-body">No attendees yet. Be the first to join!</p>
         ) : (
           <div className="flex flex-wrap gap-2">
             {session.attendees.map((p, i) => (
               <span
                 key={i}
-                className="inline-flex items-center rounded-full bg-parchment-100 px-3 py-1 text-xs font-mono text-stone-600"
+                className="inline-flex items-center rounded-full bg-parchment-100 dark:bg-stone-800 px-3 py-1 text-xs font-mono text-stone-600 dark:text-stone-300"
               >
                 {principalToShort(p)}
               </span>
@@ -221,12 +221,12 @@ export function SessionDetailPage() {
       </div>
 
       {/* Setlists placeholder */}
-      <div className="rounded-xl border border-parchment-200 bg-white p-5 shadow-card">
-        <h2 className="font-display text-lg font-semibold text-stone-900 mb-4 flex items-center gap-2">
-          <List size={18} className="text-moss-600" />
+      <div className="rounded-xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-5 shadow-card">
+        <h2 className="font-display text-lg font-semibold text-stone-900 dark:text-parchment-50 mb-4 flex items-center gap-2">
+          <List size={18} className="text-moss-600 dark:text-moss-400" />
           Setlists
         </h2>
-        <p className="text-sm text-stone-400 italic font-body">No setlists yet.</p>
+        <p className="text-sm text-stone-400 dark:text-stone-500 italic font-body">No setlists yet.</p>
       </div>
     </div>
   );

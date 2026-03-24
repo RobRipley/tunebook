@@ -5,10 +5,10 @@ import { router } from "@/router";
 
 function LoadingScreen() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-parchment-50">
+    <div className="min-h-screen flex items-center justify-center bg-parchment-50 dark:bg-stone-950">
       <div className="flex flex-col items-center gap-4">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-moss-500 border-t-transparent" />
-        <p className="text-sm text-stone-500 font-body">Loading Tunebook...</p>
+        <p className="text-sm text-stone-500 dark:text-stone-400 font-body">Loading Tunebook...</p>
       </div>
     </div>
   );

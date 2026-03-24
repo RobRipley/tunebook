@@ -93,22 +93,22 @@ export function AddTuneDialog({ open, onClose }: AddTuneDialogProps) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-stone-900/40 backdrop-blur-sm"
+        className="absolute inset-0 bg-stone-900/40 dark:bg-stone-950/70 backdrop-blur-sm"
         onClick={onClose}
       />
 
       {/* Dialog */}
-      <div className="relative z-10 mx-4 w-full max-w-2xl rounded-xl border border-parchment-200 bg-white shadow-xl max-h-[90vh] overflow-y-auto">
+      <div className="relative z-10 w-full max-w-2xl rounded-xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 shadow-xl max-h-[90vh] overflow-y-auto">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-parchment-200 px-6 py-4">
-          <h2 className="font-display text-xl font-semibold text-stone-900">Add a Tune</h2>
+        <div className="flex items-center justify-between border-b border-parchment-200 dark:border-stone-700 px-6 py-4">
+          <h2 className="font-display text-xl font-semibold text-stone-900 dark:text-parchment-50">Add a Tune</h2>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-md p-1.5 text-stone-400 hover:bg-parchment-100 hover:text-stone-600 transition-colors cursor-pointer"
+            className="rounded-md p-1.5 text-stone-400 dark:text-stone-500 hover:bg-parchment-100 dark:hover:bg-stone-800 hover:text-stone-600 dark:hover:text-stone-300 transition-colors motion-reduce:transition-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500"
             aria-label="Close dialog"
           >
             <X size={20} />
@@ -119,7 +119,7 @@ export function AddTuneDialog({ open, onClose }: AddTuneDialogProps) {
         <div className="space-y-5 px-6 py-5">
           {/* ABC Notation */}
           <div>
-            <label htmlFor="abc-input" className="block text-sm font-medium text-stone-700 font-body mb-1.5">
+            <label htmlFor="abc-input" className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1.5">
               ABC Notation
             </label>
             <textarea
@@ -128,14 +128,14 @@ export function AddTuneDialog({ open, onClose }: AddTuneDialogProps) {
               onChange={(e) => setAbc(e.target.value)}
               rows={8}
               placeholder={"X:1\nT:The Kesh Jig\nR:jig\nM:6/8\nK:Gmaj\n|:GAG GAB|ABA ABd|edd gdd|edB dBA|..."}
-              className="w-full rounded-lg border border-stone-300 bg-parchment-50 px-3 py-2 font-mono text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 resize-y"
+              className="w-full rounded-lg border border-stone-300 dark:border-stone-600 bg-parchment-50 dark:bg-stone-800 px-3 py-2 font-mono text-sm text-stone-800 dark:text-stone-200 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 resize-y"
             />
           </div>
 
           {/* Preview */}
           {abc.trim() && (
-            <div className="rounded-lg border border-parchment-200 bg-parchment-50 p-3">
-              <p className="mb-2 text-xs font-medium uppercase tracking-wider text-stone-400 font-body">Preview</p>
+            <div className="rounded-lg border border-parchment-200 dark:border-stone-700 bg-parchment-50 dark:bg-stone-800 p-3">
+              <p className="mb-2 text-xs font-medium uppercase tracking-wider text-stone-400 dark:text-stone-500 font-body">Preview</p>
               <AbcRenderer abc={abc} preview />
             </div>
           )}
@@ -144,7 +144,7 @@ export function AddTuneDialog({ open, onClose }: AddTuneDialogProps) {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {/* Title */}
             <div className="sm:col-span-3">
-              <label htmlFor="tune-title" className="block text-sm font-medium text-stone-700 font-body mb-1.5">
+              <label htmlFor="tune-title" className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1.5">
                 Title
               </label>
               <input
@@ -153,20 +153,20 @@ export function AddTuneDialog({ open, onClose }: AddTuneDialogProps) {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Tune title"
-                className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+                className="w-full rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 px-3 py-2 text-sm text-stone-800 dark:text-stone-200 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
               />
             </div>
 
             {/* Tune Type */}
             <div>
-              <label htmlFor="tune-type" className="block text-sm font-medium text-stone-700 font-body mb-1.5">
+              <label htmlFor="tune-type" className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1.5">
                 Type
               </label>
               <select
                 id="tune-type"
                 value={tuneTypeKind}
                 onChange={(e) => setTuneTypeKind(e.target.value)}
-                className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body cursor-pointer"
+                className="w-full rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 px-3 py-2 text-sm text-stone-800 dark:text-stone-200 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body cursor-pointer"
               >
                 <option value="">Select type...</option>
                 {TUNE_TYPES.map((t) => (
@@ -177,14 +177,14 @@ export function AddTuneDialog({ open, onClose }: AddTuneDialogProps) {
 
             {/* Key */}
             <div>
-              <label htmlFor="tune-key" className="block text-sm font-medium text-stone-700 font-body mb-1.5">
+              <label htmlFor="tune-key" className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1.5">
                 Key
               </label>
               <select
                 id="tune-key"
                 value={key}
                 onChange={(e) => setKey(e.target.value)}
-                className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body cursor-pointer"
+                className="w-full rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 px-3 py-2 text-sm text-stone-800 dark:text-stone-200 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body cursor-pointer"
               >
                 <option value="">Select key...</option>
                 {COMMON_KEYS.map((k) => (
@@ -196,7 +196,7 @@ export function AddTuneDialog({ open, onClose }: AddTuneDialogProps) {
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-end gap-3 border-t border-parchment-200 px-6 py-4">
+        <div className="flex items-center justify-end gap-3 border-t border-parchment-200 dark:border-stone-700 px-6 py-4">
           <Button variant="ghost" onClick={onClose}>
             Cancel
           </Button>

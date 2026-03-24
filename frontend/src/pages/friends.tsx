@@ -41,16 +41,16 @@ function FriendItem({ principalVal }: { principalVal: unknown }) {
     <Link
       to="/profile/$principalId"
       params={{ principalId: principalText }}
-      className="flex items-center gap-3 rounded-lg border border-parchment-200 bg-white p-3 shadow-sm hover:shadow-card transition-all duration-200"
+      className="flex items-center gap-3 rounded-lg border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-3 shadow-sm hover:shadow-card transition-all duration-200 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500"
     >
-      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-moss-100 text-moss-700 shrink-0 font-display font-bold text-sm">
+      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-moss-100 dark:bg-moss-900 text-moss-700 dark:text-moss-400 shrink-0 font-display font-bold text-sm">
         {profile?.profile.displayName?.charAt(0).toUpperCase() ?? "?"}
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium text-stone-800 font-body truncate">
+        <p className="text-sm font-medium text-stone-800 dark:text-stone-200 font-body truncate">
           {profile?.profile.displayName ?? "Unknown User"}
         </p>
-        <p className="text-xs text-stone-400 font-mono truncate">{principalToShort(principalVal)}</p>
+        <p className="text-xs text-stone-400 dark:text-stone-500 font-mono truncate">{principalToShort(principalVal)}</p>
       </div>
     </Link>
   );
@@ -73,28 +73,28 @@ function PendingRequestItem({
   const { data: profile } = useUserProfile(parsedPrincipal);
 
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-parchment-200 bg-white p-3 shadow-sm">
-      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 text-amber-700 shrink-0 font-display font-bold text-sm">
+    <div className="flex items-center gap-3 rounded-lg border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-3 shadow-sm">
+      <span className="flex h-9 w-9 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400 shrink-0 font-display font-bold text-sm">
         {profile?.profile.displayName?.charAt(0).toUpperCase() ?? "?"}
       </span>
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium text-stone-800 font-body truncate">
+        <p className="text-sm font-medium text-stone-800 dark:text-stone-200 font-body truncate">
           {profile?.profile.displayName ?? "Unknown User"}
         </p>
-        <p className="text-xs text-stone-400 font-mono truncate">{principalToShort(request.from)}</p>
+        <p className="text-xs text-stone-400 dark:text-stone-500 font-mono truncate">{principalToShort(request.from)}</p>
       </div>
       <div className="flex gap-2 shrink-0">
         <button
           type="button"
           onClick={() => onRespond(request.id, true)}
-          className="inline-flex items-center gap-1 rounded-md bg-moss-600 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-moss-700 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1 rounded-md bg-moss-600 dark:bg-moss-700 px-2.5 py-1.5 text-xs font-medium text-white hover:bg-moss-700 dark:hover:bg-moss-600 transition-colors motion-reduce:transition-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500"
         >
           <Check size={12} /> Accept
         </button>
         <button
           type="button"
           onClick={() => onRespond(request.id, false)}
-          className="inline-flex items-center gap-1 rounded-md border border-stone-300 px-2.5 py-1.5 text-xs font-medium text-stone-600 hover:bg-stone-50 transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1 rounded-md border border-stone-300 dark:border-stone-600 px-2.5 py-1.5 text-xs font-medium text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors motion-reduce:transition-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500"
         >
           <X size={12} /> Decline
         </button>
@@ -147,16 +147,16 @@ export function FriendsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-2xl font-bold text-stone-900">Friends</h1>
-        <p className="mt-1 text-sm text-stone-500 font-body">
+        <h1 className="font-display text-2xl font-bold text-stone-900 dark:text-parchment-50">Friends</h1>
+        <p className="mt-1 text-sm text-stone-500 dark:text-stone-400 font-body">
           Connect with fellow musicians.
         </p>
       </div>
 
       {/* Add Friend */}
-      <div className="rounded-xl border border-parchment-200 bg-white p-5 shadow-card">
-        <h2 className="font-display text-lg font-semibold text-stone-900 mb-3 flex items-center gap-2">
-          <UserPlus size={18} className="text-moss-600" />
+      <div className="rounded-xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-5 shadow-card">
+        <h2 className="font-display text-lg font-semibold text-stone-900 dark:text-parchment-50 mb-3 flex items-center gap-2">
+          <UserPlus size={18} className="text-moss-600 dark:text-moss-400" />
           Add a Friend
         </h2>
         <form onSubmit={handleSendRequest} className="flex gap-2">
@@ -165,7 +165,7 @@ export function FriendsPage() {
             value={addInput}
             onChange={(e) => setAddInput(e.target.value)}
             placeholder="Paste a principal ID (e.g. aaaaa-aa)"
-            className="flex-1 rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+            className="flex-1 rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 px-3 py-2 text-sm text-stone-800 dark:text-stone-200 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
           />
           <Button type="submit" disabled={sendRequest.isPending || !addInput.trim()} className="gap-1.5 shrink-0">
             {sendRequest.isPending ? <Loader2 size={14} className="animate-spin" /> : <UserPlus size={14} />}
@@ -176,12 +176,12 @@ export function FriendsPage() {
 
       {/* Pending Requests */}
       {(pendingLoading || pendingIncoming.length > 0) && (
-        <div className="rounded-xl border border-parchment-200 bg-white p-5 shadow-card">
-          <h2 className="font-display text-lg font-semibold text-stone-900 mb-3 flex items-center gap-2">
-            <Clock size={18} className="text-amber-600" />
+        <div className="rounded-xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-5 shadow-card">
+          <h2 className="font-display text-lg font-semibold text-stone-900 dark:text-parchment-50 mb-3 flex items-center gap-2">
+            <Clock size={18} className="text-amber-600 dark:text-amber-400" />
             Pending Requests
             {pendingIncoming.length > 0 && (
-              <span className="ml-auto rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-700 font-body">
+              <span className="ml-auto rounded-full bg-amber-100 dark:bg-amber-900/40 px-2 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-400 font-body">
                 {pendingIncoming.length}
               </span>
             )}
@@ -205,12 +205,12 @@ export function FriendsPage() {
       )}
 
       {/* Friends list */}
-      <div className="rounded-xl border border-parchment-200 bg-white p-5 shadow-card">
-        <h2 className="font-display text-lg font-semibold text-stone-900 mb-3 flex items-center gap-2">
-          <Users size={18} className="text-moss-600" />
+      <div className="rounded-xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-5 shadow-card">
+        <h2 className="font-display text-lg font-semibold text-stone-900 dark:text-parchment-50 mb-3 flex items-center gap-2">
+          <Users size={18} className="text-moss-600 dark:text-moss-400" />
           My Friends
           {friends && (
-            <span className="ml-auto rounded-full bg-parchment-100 px-2 py-0.5 text-xs font-medium text-stone-500 font-body">
+            <span className="ml-auto rounded-full bg-parchment-100 dark:bg-stone-800 px-2 py-0.5 text-xs font-medium text-stone-500 dark:text-stone-400 font-body">
               {friends.length}
             </span>
           )}
@@ -221,7 +221,7 @@ export function FriendsPage() {
             <Loader2 className="animate-spin text-moss-500" size={24} />
           </div>
         ) : !friends || friends.length === 0 ? (
-          <p className="text-sm text-stone-400 italic font-body">
+          <p className="text-sm text-stone-400 dark:text-stone-500 italic font-body">
             No friends yet. Add someone by pasting their principal ID above.
           </p>
         ) : (

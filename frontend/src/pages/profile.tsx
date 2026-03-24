@@ -35,6 +35,8 @@ function makeInstrument(kind: string): Instrument {
   return { __kind__: kind as Exclude<Instrument["__kind__"], "other">, [kind]: null } as Instrument;
 }
 
+const inputClass = "w-full rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 px-3 py-2 text-sm text-stone-800 dark:text-stone-200 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body";
+
 function SetupForm({ onSave }: { onSave: (profile: UserProfile) => Promise<void> }) {
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
@@ -75,20 +77,20 @@ function SetupForm({ onSave }: { onSave: (profile: UserProfile) => Promise<void>
 
   return (
     <div className="max-w-lg mx-auto">
-      <div className="rounded-xl border border-parchment-200 bg-white p-6 shadow-card">
+      <div className="rounded-xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-6 shadow-card">
         <div className="mb-6 flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-moss-100 text-moss-700">
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-moss-100 dark:bg-moss-900 text-moss-700 dark:text-moss-400">
             <User size={20} />
           </span>
           <div>
-            <h2 className="font-display text-xl font-bold text-stone-900">Set Up Your Profile</h2>
-            <p className="text-sm text-stone-500 font-body">Tell us a bit about yourself</p>
+            <h2 className="font-display text-xl font-bold text-stone-900 dark:text-parchment-50">Set Up Your Profile</h2>
+            <p className="text-sm text-stone-500 dark:text-stone-400 font-body">Tell us a bit about yourself</p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-stone-700 font-body mb-1">
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1">
               Display Name <span className="text-red-500">*</span>
             </label>
             <input
@@ -96,46 +98,46 @@ function SetupForm({ onSave }: { onSave: (profile: UserProfile) => Promise<void>
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               placeholder="Your name or handle"
-              className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+              className={inputClass}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-700 font-body mb-1">Bio</label>
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1">Bio</label>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder="Tell us about your music journey..."
               rows={3}
-              className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body resize-none"
+              className={`${inputClass} resize-none`}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-stone-700 font-body mb-1">City</label>
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1">City</label>
               <input
                 type="text"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="Dublin"
-                className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+                className={inputClass}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-stone-700 font-body mb-1">Country</label>
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1">Country</label>
               <input
                 type="text"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 placeholder="Ireland"
-                className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+                className={inputClass}
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-700 font-body mb-2">Instruments</label>
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-2">Instruments</label>
             <div className="flex flex-wrap gap-2">
               {INSTRUMENT_OPTIONS.map((opt) => (
                 <button
@@ -143,10 +145,11 @@ function SetupForm({ onSave }: { onSave: (profile: UserProfile) => Promise<void>
                   type="button"
                   onClick={() => toggleInstrument(opt.value)}
                   className={cn(
-                    "rounded-full px-3 py-1 text-xs font-medium font-body transition-all cursor-pointer",
+                    "rounded-full px-3 py-1 text-xs font-medium font-body transition-all motion-reduce:transition-none cursor-pointer",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500",
                     selectedInstruments.includes(opt.value)
-                      ? "bg-moss-600 text-white"
-                      : "bg-parchment-100 text-stone-600 hover:bg-parchment-200"
+                      ? "bg-moss-600 text-white dark:bg-moss-700"
+                      : "bg-parchment-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-parchment-200 dark:hover:bg-stone-700"
                   )}
                 >
                   {opt.label}
@@ -194,34 +197,34 @@ function EditableField({
   if (editing) {
     return (
       <div className="space-y-1">
-        <label className="block text-xs font-medium text-stone-500 font-body uppercase tracking-wide">{label}</label>
+        <label className="block text-xs font-medium text-stone-500 dark:text-stone-400 font-body uppercase tracking-wide">{label}</label>
         {multiline ? (
           <textarea
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             rows={3}
-            className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body resize-none"
+            className={`${inputClass} resize-none`}
           />
         ) : (
           <input
             type="text"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+            className={inputClass}
           />
         )}
         <div className="flex gap-2">
           <button
             type="button"
             onClick={handleSave}
-            className="inline-flex items-center gap-1 rounded-md bg-moss-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-moss-700 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 rounded-md bg-moss-600 dark:bg-moss-700 px-2.5 py-1 text-xs font-medium text-white hover:bg-moss-700 dark:hover:bg-moss-600 transition-colors motion-reduce:transition-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500"
           >
             <Check size={12} /> Save
           </button>
           <button
             type="button"
             onClick={handleCancel}
-            className="inline-flex items-center gap-1 rounded-md border border-stone-300 px-2.5 py-1 text-xs font-medium text-stone-600 hover:bg-stone-50 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 rounded-md border border-stone-300 dark:border-stone-600 px-2.5 py-1 text-xs font-medium text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors motion-reduce:transition-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500"
           >
             <X size={12} /> Cancel
           </button>
@@ -232,15 +235,16 @@ function EditableField({
 
   return (
     <div className="group space-y-0.5">
-      <label className="block text-xs font-medium text-stone-500 font-body uppercase tracking-wide">{label}</label>
+      <label className="block text-xs font-medium text-stone-500 dark:text-stone-400 font-body uppercase tracking-wide">{label}</label>
       <div className="flex items-start gap-2">
-        <p className="flex-1 text-sm text-stone-800 font-body">
-          {value || <span className="text-stone-400 italic">{placeholder}</span>}
+        <p className="flex-1 text-sm text-stone-800 dark:text-stone-200 font-body">
+          {value || <span className="text-stone-400 dark:text-stone-500 italic">{placeholder}</span>}
         </p>
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="opacity-0 group-hover:opacity-100 transition-opacity mt-0.5 text-stone-400 hover:text-moss-600 cursor-pointer"
+          aria-label={`Edit ${label}`}
+          className="opacity-0 group-hover:opacity-100 transition-opacity motion-reduce:transition-none mt-0.5 text-stone-400 dark:text-stone-500 hover:text-moss-600 dark:hover:text-moss-400 cursor-pointer focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500 rounded-sm"
         >
           <Edit2 size={13} />
         </button>
@@ -306,15 +310,15 @@ export function ProfilePage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold text-stone-900">My Profile</h1>
+        <h1 className="font-display text-2xl font-bold text-stone-900 dark:text-parchment-50">My Profile</h1>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Left column: profile card */}
         <div className="lg:col-span-1 space-y-4">
-          <div className="rounded-xl border border-parchment-200 bg-white p-5 shadow-card space-y-4">
+          <div className="rounded-xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-5 shadow-card space-y-4">
             <div className="flex items-center gap-3">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-moss-100 text-moss-700 shrink-0">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-moss-100 dark:bg-moss-900 text-moss-700 dark:text-moss-400 shrink-0">
                 <User size={22} />
               </span>
               <div className="min-w-0 flex-1">
@@ -336,7 +340,7 @@ export function ProfilePage() {
             />
 
             <div className="space-y-0.5">
-              <label className="block text-xs font-medium text-stone-500 font-body uppercase tracking-wide">
+              <label className="block text-xs font-medium text-stone-500 dark:text-stone-400 font-body uppercase tracking-wide">
                 Location
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -365,14 +369,15 @@ export function ProfilePage() {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="block text-xs font-medium text-stone-500 font-body uppercase tracking-wide">
+                <label className="block text-xs font-medium text-stone-500 dark:text-stone-400 font-body uppercase tracking-wide">
                   Instruments
                 </label>
                 {!editingInstruments && (
                   <button
                     type="button"
                     onClick={startEditInstruments}
-                    className="text-stone-400 hover:text-moss-600 transition-colors cursor-pointer"
+                    aria-label="Edit instruments"
+                    className="text-stone-400 dark:text-stone-500 hover:text-moss-600 dark:hover:text-moss-400 transition-colors motion-reduce:transition-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500 rounded-sm"
                   >
                     <Edit2 size={13} />
                   </button>
@@ -388,10 +393,11 @@ export function ProfilePage() {
                         type="button"
                         onClick={() => toggleDraftInstrument(opt.value)}
                         className={cn(
-                          "rounded-full px-2.5 py-0.5 text-xs font-medium font-body transition-all cursor-pointer",
+                          "rounded-full px-2.5 py-0.5 text-xs font-medium font-body transition-all motion-reduce:transition-none cursor-pointer",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500",
                           draftInstruments.includes(opt.value)
-                            ? "bg-moss-600 text-white"
-                            : "bg-parchment-100 text-stone-600 hover:bg-parchment-200"
+                            ? "bg-moss-600 dark:bg-moss-700 text-white"
+                            : "bg-parchment-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-parchment-200 dark:hover:bg-stone-700"
                         )}
                       >
                         {opt.label}
@@ -402,14 +408,14 @@ export function ProfilePage() {
                     <button
                       type="button"
                       onClick={saveInstruments}
-                      className="inline-flex items-center gap-1 rounded-md bg-moss-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-moss-700 transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1 rounded-md bg-moss-600 dark:bg-moss-700 px-2.5 py-1 text-xs font-medium text-white hover:bg-moss-700 dark:hover:bg-moss-600 transition-colors motion-reduce:transition-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500"
                     >
                       <Check size={12} /> Save
                     </button>
                     <button
                       type="button"
                       onClick={() => setEditingInstruments(false)}
-                      className="inline-flex items-center gap-1 rounded-md border border-stone-300 px-2.5 py-1 text-xs font-medium text-stone-600 hover:bg-stone-50 transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1 rounded-md border border-stone-300 dark:border-stone-600 px-2.5 py-1 text-xs font-medium text-stone-600 dark:text-stone-300 hover:bg-stone-50 dark:hover:bg-stone-800 transition-colors motion-reduce:transition-none cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500"
                     >
                       <X size={12} /> Cancel
                     </button>
@@ -421,13 +427,13 @@ export function ProfilePage() {
                     p.instruments.map((inst, i) => (
                       <span
                         key={i}
-                        className="rounded-full bg-parchment-100 px-2.5 py-0.5 text-xs font-medium text-stone-700 font-body"
+                        className="rounded-full bg-parchment-100 dark:bg-stone-800 px-2.5 py-0.5 text-xs font-medium text-stone-700 dark:text-stone-300 font-body"
                       >
                         {formatInstrument(inst)}
                       </span>
                     ))
                   ) : (
-                    <span className="text-sm text-stone-400 italic font-body">No instruments added</span>
+                    <span className="text-sm text-stone-400 dark:text-stone-500 italic font-body">No instruments added</span>
                   )}
                 </div>
               )}
@@ -438,18 +444,18 @@ export function ProfilePage() {
         {/* Right column: tunebook + wish list */}
         <div className="lg:col-span-2 space-y-4">
           {/* Known tunes */}
-          <div className="rounded-xl border border-parchment-200 bg-white p-5 shadow-card">
+          <div className="rounded-xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-5 shadow-card">
             <div className="flex items-center gap-2 mb-4">
-              <Music size={18} className="text-moss-600" />
-              <h2 className="font-display text-lg font-semibold text-stone-900">My Tunebook</h2>
-              <span className="ml-auto rounded-full bg-parchment-100 px-2 py-0.5 text-xs font-medium text-stone-500 font-body">
+              <Music size={18} className="text-moss-600 dark:text-moss-400" />
+              <h2 className="font-display text-lg font-semibold text-stone-900 dark:text-parchment-50">My Tunebook</h2>
+              <span className="ml-auto rounded-full bg-parchment-100 dark:bg-stone-800 px-2 py-0.5 text-xs font-medium text-stone-500 dark:text-stone-400 font-body">
                 {knownTunes.length}
               </span>
             </div>
             {knownTunes.length === 0 ? (
-              <p className="text-sm text-stone-400 italic font-body">
+              <p className="text-sm text-stone-400 dark:text-stone-500 italic font-body">
                 No tunes marked as known yet.{" "}
-                <Link to="/" className="text-moss-600 hover:text-moss-700 not-italic underline">
+                <Link to="/" className="text-moss-600 dark:text-moss-400 hover:text-moss-700 dark:hover:text-moss-300 not-italic underline">
                   Browse tunes
                 </Link>
               </p>
@@ -460,7 +466,7 @@ export function ProfilePage() {
                     <Link
                       to="/tune/$tuneId"
                       params={{ tuneId: tune.id.toString() }}
-                      className="text-sm text-moss-700 hover:text-moss-900 hover:underline font-body"
+                      className="text-sm text-moss-700 dark:text-moss-400 hover:text-moss-900 dark:hover:text-moss-300 hover:underline font-body"
                     >
                       {tune.title}
                     </Link>
@@ -471,16 +477,16 @@ export function ProfilePage() {
           </div>
 
           {/* Wish list */}
-          <div className="rounded-xl border border-parchment-200 bg-white p-5 shadow-card">
+          <div className="rounded-xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-5 shadow-card">
             <div className="flex items-center gap-2 mb-4">
-              <BookOpen size={18} className="text-moss-600" />
-              <h2 className="font-display text-lg font-semibold text-stone-900">Wish List</h2>
-              <span className="ml-auto rounded-full bg-parchment-100 px-2 py-0.5 text-xs font-medium text-stone-500 font-body">
+              <BookOpen size={18} className="text-moss-600 dark:text-moss-400" />
+              <h2 className="font-display text-lg font-semibold text-stone-900 dark:text-parchment-50">Wish List</h2>
+              <span className="ml-auto rounded-full bg-parchment-100 dark:bg-stone-800 px-2 py-0.5 text-xs font-medium text-stone-500 dark:text-stone-400 font-body">
                 {wishTunes.length}
               </span>
             </div>
             {wishTunes.length === 0 ? (
-              <p className="text-sm text-stone-400 italic font-body">Your wish list is empty.</p>
+              <p className="text-sm text-stone-400 dark:text-stone-500 italic font-body">Your wish list is empty.</p>
             ) : (
               <ul className="space-y-1">
                 {wishTunes.map((tune) => (
@@ -488,7 +494,7 @@ export function ProfilePage() {
                     <Link
                       to="/tune/$tuneId"
                       params={{ tuneId: tune.id.toString() }}
-                      className="text-sm text-moss-700 hover:text-moss-900 hover:underline font-body"
+                      className="text-sm text-moss-700 dark:text-moss-400 hover:text-moss-900 dark:hover:text-moss-300 hover:underline font-body"
                     >
                       {tune.title}
                     </Link>

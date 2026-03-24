@@ -22,11 +22,11 @@ function difficultyLabel(d: DifficultyLevel): string {
 
 function difficultyColor(d: DifficultyLevel): string {
   switch (d) {
-    case DifficultyLevel.beginner: return "bg-emerald-100 text-emerald-700";
-    case DifficultyLevel.intermediate: return "bg-amber-100 text-amber-700";
-    case DifficultyLevel.advanced: return "bg-red-100 text-red-700";
-    case DifficultyLevel.allLevels: return "bg-parchment-200 text-stone-700";
-    default: return "bg-parchment-200 text-stone-700";
+    case DifficultyLevel.beginner: return "bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400";
+    case DifficultyLevel.intermediate: return "bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-400";
+    case DifficultyLevel.advanced: return "bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400";
+    case DifficultyLevel.allLevels: return "bg-parchment-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300";
+    default: return "bg-parchment-200 dark:bg-stone-800 text-stone-700 dark:text-stone-300";
   }
 }
 
@@ -61,12 +61,16 @@ function SessionCard({
           navigate({ to: "/session/$sessionId", params: { sessionId: session.id.toString() } });
         }
       }}
-      className="rounded-xl border border-parchment-200 bg-white p-4 shadow-card transition-all duration-200 hover:shadow-card-hover cursor-pointer"
+      className={cn(
+        "rounded-xl border border-parchment-200 dark:border-stone-800 bg-white dark:bg-stone-900 p-4 shadow-card",
+        "transition-all duration-200 motion-reduce:transition-none hover:shadow-card-hover cursor-pointer",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-stone-950"
+      )}
     >
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
-          <h3 className="font-display text-base font-semibold text-stone-900 truncate">{session.name}</h3>
-          <div className="mt-1 flex items-center gap-1.5 text-xs text-stone-500 font-body">
+          <h3 className="font-display text-base font-semibold text-stone-900 dark:text-parchment-50 truncate">{session.name}</h3>
+          <div className="mt-1 flex items-center gap-1.5 text-xs text-stone-500 dark:text-stone-400 font-body">
             <MapPin size={11} />
             <span>{session.location.city}, {session.location.country}</span>
           </div>
@@ -82,26 +86,26 @@ function SessionCard({
       </div>
 
       <div className="mt-3 flex items-center gap-3 flex-wrap">
-        <span className="inline-flex items-center gap-1 text-xs text-stone-500 font-body">
+        <span className="inline-flex items-center gap-1 text-xs text-stone-500 dark:text-stone-400 font-body">
           <Calendar size={11} />
           {frequencyLabel(session.frequency)}
         </span>
-        <span className="inline-flex items-center gap-1 text-xs text-stone-500 font-body">
+        <span className="inline-flex items-center gap-1 text-xs text-stone-500 dark:text-stone-400 font-body">
           {session.isOpen ? <Unlock size={11} /> : <Lock size={11} />}
           {session.isOpen ? "Open" : "Closed"}
         </span>
-        <span className="inline-flex items-center gap-1 text-xs text-stone-500 font-body">
+        <span className="inline-flex items-center gap-1 text-xs text-stone-500 dark:text-stone-400 font-body">
           <Users size={11} />
           {session.attendees.length}
         </span>
       </div>
 
       {session.description && (
-        <p className="mt-2 text-xs text-stone-500 font-body line-clamp-2">{session.description}</p>
+        <p className="mt-2 text-xs text-stone-500 dark:text-stone-400 font-body line-clamp-2">{session.description}</p>
       )}
 
       <div className="mt-3 flex items-center justify-between">
-        <span className="text-xs text-stone-400 font-body">{session.time}</span>
+        <span className="text-xs text-stone-400 dark:text-stone-500 font-body">{session.time}</span>
         <div onClick={(e) => e.stopPropagation()}>
           <StarButton
             starred={starred}
@@ -114,6 +118,9 @@ function SessionCard({
     </div>
   );
 }
+
+const inputClass = "w-full rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 px-3 py-2 text-sm text-stone-800 dark:text-stone-200 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body";
+const selectClass = "w-full rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 px-3 py-2 text-sm text-stone-700 dark:text-stone-300 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body cursor-pointer";
 
 function CreateSessionModal({ onClose }: { onClose: () => void }) {
   const createSession = useCreateSession();
@@ -151,63 +158,63 @@ function CreateSessionModal({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-2xl border border-parchment-200 bg-white p-6 shadow-xl">
-        <h2 className="font-display text-xl font-bold text-stone-900 mb-5">Create a Session</h2>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 dark:bg-black/60 backdrop-blur-sm">
+      <div className="w-full max-w-md rounded-2xl border border-parchment-200 dark:border-stone-700 bg-white dark:bg-stone-900 p-6 shadow-xl max-h-[90vh] overflow-y-auto">
+        <h2 className="font-display text-xl font-bold text-stone-900 dark:text-parchment-50 mb-5">Create a Session</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-stone-700 font-body mb-1">Session Name</label>
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1">Session Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="The Cobblestone Session"
-              className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+              className={inputClass}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-stone-700 font-body mb-1">City</label>
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1">City</label>
               <input
                 type="text"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder="Dublin"
-                className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+                className={inputClass}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-stone-700 font-body mb-1">Country</label>
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1">Country</label>
               <input
                 type="text"
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 placeholder="Ireland"
-                className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+                className={inputClass}
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-700 font-body mb-1">Time / Schedule</label>
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1">Time / Schedule</label>
             <input
               type="text"
               value={time}
               onChange={(e) => setTime(e.target.value)}
               placeholder="Thursdays 9pm"
-              className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body"
+              className={inputClass}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-stone-700 font-body mb-1">Frequency</label>
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1">Frequency</label>
               <select
                 value={frequency}
                 onChange={(e) => setFrequency(e.target.value as SessionFrequency)}
-                className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body cursor-pointer"
+                className={selectClass}
               >
                 <option value="weekly">Weekly</option>
                 <option value="biweekly">Bi-weekly</option>
@@ -216,11 +223,11 @@ function CreateSessionModal({ onClose }: { onClose: () => void }) {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-stone-700 font-body mb-1">Difficulty</label>
+              <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1">Difficulty</label>
               <select
                 value={difficulty}
                 onChange={(e) => setDifficulty(e.target.value as DifficultyLevel)}
-                className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-700 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body cursor-pointer"
+                className={selectClass}
               >
                 <option value="allLevels">All Levels</option>
                 <option value="beginner">Beginner</option>
@@ -238,19 +245,19 @@ function CreateSessionModal({ onClose }: { onClose: () => void }) {
                 onChange={(e) => setIsOpen(e.target.checked)}
                 className="sr-only peer"
               />
-              <div className="h-5 w-9 rounded-full bg-stone-200 peer-checked:bg-moss-600 transition-colors after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all peer-checked:after:translate-x-4" />
+              <div className="h-5 w-9 rounded-full bg-stone-200 dark:bg-stone-700 peer-checked:bg-moss-600 transition-colors motion-reduce:transition-none after:absolute after:left-0.5 after:top-0.5 after:h-4 after:w-4 after:rounded-full after:bg-white after:transition-all motion-reduce:after:transition-none peer-checked:after:translate-x-4" />
             </label>
-            <span className="text-sm font-medium text-stone-700 font-body">Open session</span>
+            <span className="text-sm font-medium text-stone-700 dark:text-stone-300 font-body">Open session</span>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-stone-700 font-body mb-1">Description</label>
+            <label className="block text-sm font-medium text-stone-700 dark:text-stone-300 font-body mb-1">Description</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="A welcoming session for all traditional music lovers..."
               rows={3}
-              className="w-full rounded-lg border border-stone-300 bg-white px-3 py-2 text-sm text-stone-800 placeholder:text-stone-400 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body resize-none"
+              className={`${inputClass} resize-none`}
             />
           </div>
 
@@ -294,8 +301,8 @@ export function SessionsPage() {
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="font-display text-2xl font-bold text-stone-900">Sessions</h1>
-          <p className="mt-1 text-sm text-stone-500 font-body">
+          <h1 className="font-display text-2xl font-bold text-stone-900 dark:text-parchment-50">Sessions</h1>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400 font-body">
             Find and join traditional music sessions near you.
           </p>
         </div>
@@ -312,10 +319,10 @@ export function SessionsPage() {
       )}
 
       {!isLoading && (!sessions || sessions.length === 0) && (
-        <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-parchment-300 py-16 text-center">
-          <Calendar className="mb-3 text-stone-300" size={40} />
-          <h3 className="font-display text-lg font-semibold text-stone-700">No sessions yet</h3>
-          <p className="mt-1 max-w-sm text-sm text-stone-500 font-body">
+        <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-parchment-300 dark:border-stone-700 py-16 text-center">
+          <Calendar className="mb-3 text-stone-300 dark:text-stone-600" size={40} />
+          <h3 className="font-display text-lg font-semibold text-stone-700 dark:text-stone-300">No sessions yet</h3>
+          <p className="mt-1 max-w-sm text-sm text-stone-500 dark:text-stone-400 font-body">
             Be the first to create a session in your area.
           </p>
           <Button onClick={() => setCreateOpen(true)} className="mt-4 gap-2" size="sm">
