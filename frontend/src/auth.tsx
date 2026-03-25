@@ -38,7 +38,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             ? "https://icp-api.io"
             : window.location.origin,
           identity,
-          rootKey: canisterEnv.IC_ROOT_KEY,
+          // Only pass rootKey for local development — mainnet uses hardcoded root key
+          ...(window.location.hostname.endsWith(".icp0.io")
+            ? {}
+            : { rootKey: canisterEnv.IC_ROOT_KEY }),
         },
       });
     },

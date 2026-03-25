@@ -5,11 +5,11 @@ const canisterEnv = safeGetCanisterEnv<{
   readonly ["PUBLIC_CANISTER_ID:backend"]: string;
 }>();
 
+const isMainnet = window.location.hostname.endsWith(".icp0.io");
 const agentOptions = {
-  host: window.location.hostname.endsWith(".icp0.io")
-    ? "https://icp-api.io"
-    : window.location.origin,
-  rootKey: canisterEnv?.IC_ROOT_KEY,
+  host: isMainnet ? "https://icp-api.io" : window.location.origin,
+  // Only pass rootKey for local development
+  ...(isMainnet ? {} : { rootKey: canisterEnv?.IC_ROOT_KEY }),
 };
 
 export const backend = canisterEnv
