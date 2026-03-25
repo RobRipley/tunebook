@@ -1,9 +1,9 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { AuthClient } from "@icp-sdk/auth/client";
+import { HttpAgent, Actor } from "@dfinity/agent";
 import { safeGetCanisterEnv } from "@icp-sdk/core/agent/canister-env";
-import { createActor } from "./bindings/backend/backend";
-
-type BackendActor = ReturnType<typeof createActor>;
+import { idlFactory } from "./bindings/backend/declarations/backend.did";
+import { Backend } from "./bindings/backend/backend";
 
 type AuthState = {
   isAuthenticated: boolean;
@@ -11,7 +11,7 @@ type AuthState = {
   principal: string | null;
   login: () => Promise<void>;
   logout: () => Promise<void>;
-  backend: BackendActor | null;
+  backend: Backend | null;
 };
 
 const AuthContext = createContext<AuthState | null>(null);
@@ -24,7 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [principal, setPrincipal] = useState<string | null>(null);
-  const [authenticatedBackend, setAuthenticatedBackend] = useState<BackendActor | null>(null);
+  const [authenticatedBackend, setAuthenticatedBackend] = useState<Backend | null>(null);
 
   const canisterEnv = safeGetCanisterEnv<{
     readonly ["PUBLIC_CANISTER_ID:backend"]: string;
@@ -32,16 +32,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }>();
 
   const createAuthenticatedActor = useCallback(
-    (client: AuthClient) => {
+    async (client: AuthClient) => {
       if (!canisterEnv) return null;
       const identity = client.getIdentity();
-      return createActor(canisterEnv["PUBLIC_CANISTER_ID:backend"], {
-        agentOptions: {
-          host: agentHost,
-          identity,
-          verifyQuerySignatures: false,
-        },
+      const agent = await HttpAgent.create({
+        host: agentHost,
+        identity: identity as any,
       });
+      if (!isMainnet) {
+        await agent.fetchRootKey();
+      }
+      const canisterId = canisterEnv["PUBLIC_CANISTER_ID:backend"];
+      // Use @dfinity/agent's Actor directly — bypasses @icp-sdk/core which has 400 issues
+      const rawActor = Actor.createActor(idlFactory as any, { agent, canisterId });
+      // Wrap in the bindgen's Backend class for type safety
+      return new Backend(rawActor as any);
     },
     [canisterEnv]
   );
@@ -54,7 +59,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (authenticated) {
         const id = client.getIdentity();
         setPrincipal(id.getPrincipal().toText());
-        setAuthenticatedBackend(createAuthenticatedActor(client));
+        const actor = await createAuthenticatedActor(client);
+        setAuthenticatedBackend(actor);
       }
       setIsLoading(false);
     });
@@ -67,11 +73,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         canisterEnv?.["PUBLIC_CANISTER_ID:internet_identity"]
           ? `http://${canisterEnv["PUBLIC_CANISTER_ID:internet_identity"]}.localhost:8000`
           : "https://id.ai",
-      onSuccess: () => {
+      onSuccess: async () => {
         setIsAuthenticated(true);
         const id = authClient.getIdentity();
         setPrincipal(id.getPrincipal().toText());
-        setAuthenticatedBackend(createAuthenticatedActor(authClient));
+        const actor = await createAuthenticatedActor(authClient);
+        setAuthenticatedBackend(actor);
       },
     });
   }, [authClient, canisterEnv, createAuthenticatedActor]);
