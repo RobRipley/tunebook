@@ -6,7 +6,9 @@ const canisterEnv = safeGetCanisterEnv<{
 }>();
 
 const agentOptions = {
-  host: window.location.origin,
+  host: window.location.hostname.endsWith(".icp0.io")
+    ? "https://icp-api.io"
+    : window.location.origin,
   rootKey: canisterEnv?.IC_ROOT_KEY,
 };
 

@@ -34,7 +34,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const identity = client.getIdentity();
       return createActor(canisterEnv["PUBLIC_CANISTER_ID:backend"], {
         agentOptions: {
-          host: window.location.origin,
+          host: window.location.hostname.endsWith(".icp0.io")
+            ? "https://icp-api.io"
+            : window.location.origin,
           identity,
           rootKey: canisterEnv.IC_ROOT_KEY,
         },
