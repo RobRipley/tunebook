@@ -48,7 +48,7 @@ const KEY_OPTIONS = [
 type Tab = "tunebook" | "thesession";
 
 export function TunesPage() {
-  const { principal } = useAuth();
+  const { principal, backend } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<Tab>("tunebook");
   const [searchQuery, setSearchQuery] = useState("");
@@ -122,12 +122,31 @@ export function TunesPage() {
 
   const handleImportTune = useCallback(
     async (tune: { id: number; name: string; type: string; settings?: Array<{ key: string; abc: string }> }) => {
-      const firstSetting = tune.settings?.[0];
-      if (!firstSetting) {
-        toast.error("No settings available for this tune");
+      if (!backend) {
+        toast.error("Not authenticated");
         return;
       }
       try {
+        // TheSession search API doesn't include settings/ABC notation.
+        // We need to fetch the full tune detail first to get the ABC.
+        let settings = tune.settings;
+        if (!settings?.length) {
+          toast.info(`Fetching "${tune.name}" from TheSession.org...`);
+          const rawJson = await backend.fetchThesessionTune(BigInt(tune.id));
+          try {
+            const detail = JSON.parse(rawJson);
+            settings = detail.settings;
+          } catch {
+            toast.error("Failed to parse tune details from TheSession.org");
+            return;
+          }
+        }
+
+        const firstSetting = settings?.[0];
+        if (!firstSetting) {
+          toast.error("No settings available for this tune");
+          return;
+        }
         const result = await importTune.mutateAsync({
           thesessionId: BigInt(tune.id),
           title: tune.name,
@@ -141,7 +160,7 @@ export function TunesPage() {
         toast.error("Failed to import tune");
       }
     },
-    [importTune, navigate]
+    [backend, importTune, navigate]
   );
 
   const inputClass = "w-full rounded-lg border border-stone-300 dark:border-stone-600 bg-white dark:bg-stone-800 py-2 pl-9 pr-3 text-sm text-stone-800 dark:text-stone-200 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:border-moss-500 focus:outline-none focus:ring-2 focus:ring-moss-500/20 font-body";
