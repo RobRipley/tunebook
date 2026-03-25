@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { AuthClient } from "@icp-sdk/auth/client";
+import { HttpAgent } from "@icp-sdk/core/agent";
 import { safeGetCanisterEnv } from "@icp-sdk/core/agent/canister-env";
 import { createActor } from "./bindings/backend/backend";
 
@@ -16,6 +17,9 @@ type AuthState = {
 
 const AuthContext = createContext<AuthState | null>(null);
 
+const isMainnet = typeof window !== "undefined" && window.location.hostname.endsWith(".icp0.io");
+const agentHost = isMainnet ? "https://icp-api.io" : typeof window !== "undefined" ? window.location.origin : "http://localhost:8000";
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [authClient, setAuthClient] = useState<AuthClient | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -29,21 +33,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }>();
 
   const createAuthenticatedActor = useCallback(
-    (client: AuthClient) => {
+    async (client: AuthClient) => {
       if (!canisterEnv) return null;
       const identity = client.getIdentity();
-      return createActor(canisterEnv["PUBLIC_CANISTER_ID:backend"], {
-        agentOptions: {
-          host: window.location.hostname.endsWith(".icp0.io")
-            ? "https://icp-api.io"
-            : window.location.origin,
-          identity,
-          // Only pass rootKey for local development — mainnet uses hardcoded root key
-          ...(window.location.hostname.endsWith(".icp0.io")
-            ? {}
-            : { rootKey: canisterEnv.IC_ROOT_KEY }),
-        },
+      const agent = await HttpAgent.create({
+        host: agentHost,
+        identity,
+        verifyQuerySignatures: isMainnet,
       });
+      if (!isMainnet) {
+        await agent.fetchRootKey();
+      }
+      return createActor(canisterEnv["PUBLIC_CANISTER_ID:backend"], { agent });
     },
     [canisterEnv]
   );
@@ -56,7 +57,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (authenticated) {
         const id = client.getIdentity();
         setPrincipal(id.getPrincipal().toText());
-        setAuthenticatedBackend(createAuthenticatedActor(client));
+        const actor = await createAuthenticatedActor(client);
+        setAuthenticatedBackend(actor);
       }
       setIsLoading(false);
     });
@@ -69,11 +71,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         canisterEnv?.["PUBLIC_CANISTER_ID:internet_identity"]
           ? `http://${canisterEnv["PUBLIC_CANISTER_ID:internet_identity"]}.localhost:8000`
           : "https://id.ai",
-      onSuccess: () => {
+      onSuccess: async () => {
         setIsAuthenticated(true);
         const id = authClient.getIdentity();
         setPrincipal(id.getPrincipal().toText());
-        setAuthenticatedBackend(createAuthenticatedActor(authClient));
+        const actor = await createAuthenticatedActor(authClient);
+        setAuthenticatedBackend(actor);
       },
     });
   }, [authClient, canisterEnv, createAuthenticatedActor]);
