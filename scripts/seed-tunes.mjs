@@ -221,17 +221,40 @@ async function main() {
   console.log(`Target canister: ${CANISTER_ID} on ${NETWORK}`);
   console.log('');
 
-  // Collect tunes — Dance Music book first (primary source), then Music of Ireland
+  // Collect tunes from both books
   let allTunes = [];
   for (const dir of ABC_DIRS) {
-    const tunes = loadDir(dir);
-    console.log(`Loaded ${tunes.length} tunes from ${dir}`);
-    allTunes.push(...tunes);
-    if (allTunes.length >= LIMIT) break;
+    const parsed = loadDir(dir);
+    console.log(`Loaded ${parsed.length} tunes from ${dir}`);
+    allTunes.push(...parsed);
   }
 
-  // Take only the first LIMIT tunes
-  const tunes = allTunes.slice(0, LIMIT);
+  // Sample across tune types for variety
+  const byType = {};
+  for (const t of allTunes) {
+    if (!byType[t.tuneType]) byType[t.tuneType] = [];
+    byType[t.tuneType].push(t);
+  }
+
+  // Target: ~65 jigs, ~65 reels, ~35 hornpipes, ~20 slip jigs, ~15 other
+  const quotas = { jig: 65, reel: 65, hornpipe: 35, slipJig: 20, polka: 5, slide: 5, waltz: 3, other: 2 };
+  let tunes = [];
+  for (const [type, quota] of Object.entries(quotas)) {
+    const available = byType[type] || [];
+    tunes.push(...available.slice(0, quota));
+  }
+  // Fill remaining slots with whatever's left
+  if (tunes.length < LIMIT) {
+    const usedTitles = new Set(tunes.map(t => t.title));
+    for (const t of allTunes) {
+      if (tunes.length >= LIMIT) break;
+      if (!usedTitles.has(t.title)) {
+        tunes.push(t);
+        usedTitles.add(t.title);
+      }
+    }
+  }
+  tunes = tunes.slice(0, LIMIT);
   console.log(`\nParsed ${allTunes.length} total tunes. Will seed: ${tunes.length}\n`);
 
   // Show type breakdown

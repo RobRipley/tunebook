@@ -118,15 +118,17 @@ export function useSearchThesession(searchQuery: string, tuneType?: string) {
   const { backend } = useAuth();
   return useQuery({
     queryKey: ["thesession-search", searchQuery, tuneType],
-    queryFn: () => backend!.searchThesessionTunes(searchQuery, tuneType ?? null, 1n),
-    enabled: !!backend && searchQuery.length > 1,
-    select: (data: string) => {
+    queryFn: async () => {
+      const raw = await backend!.searchThesessionTunes(searchQuery, tuneType ?? null, 1n);
       try {
-        return JSON.parse(data);
+        return JSON.parse(raw);
       } catch {
         return { tunes: [] };
       }
     },
+    enabled: !!backend && searchQuery.length > 2,
+    staleTime: 5 * 60 * 1000, // cache results for 5 min (saves cycles)
+    retry: false, // don't retry failed HTTPS outcalls
   });
 }
 

@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Search, Plus, Music, Loader2, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
@@ -61,10 +61,19 @@ export function TunesPage() {
   const starTune = useStarTune();
   const unstarTune = useUnstarTune();
 
-  // TheSession search
+  // TheSession search with debounce (HTTPS outcalls take ~4s and cost cycles)
+  const [sessionSearchInput, setSessionSearchInput] = useState("");
   const [sessionSearch, setSessionSearch] = useState("");
   const [sessionTypeFilter, setSessionTypeFilter] = useState("");
-  const { data: sessionResults, isLoading: sessionLoading } = useSearchThesession(sessionSearch, sessionTypeFilter || undefined);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSessionSearch(sessionSearchInput);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [sessionSearchInput]);
+
+  const { data: sessionResults, isLoading: sessionLoading, error: sessionError } = useSearchThesession(sessionSearch, sessionTypeFilter || undefined);
   const importTune = useImportThesessionTune();
 
   // Is this tune starred by the current user?
@@ -311,8 +320,8 @@ export function TunesPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-400 dark:text-stone-500" size={16} />
               <input
                 type="text"
-                value={sessionSearch}
-                onChange={(e) => setSessionSearch(e.target.value)}
+                value={sessionSearchInput}
+                onChange={(e) => setSessionSearchInput(e.target.value)}
                 placeholder="Search TheSession.org..."
                 className={inputClass}
               />
@@ -329,21 +338,30 @@ export function TunesPage() {
           </div>
 
           {/* Loading */}
-          {sessionLoading && sessionSearch.length > 1 && (
+          {sessionLoading && sessionSearchInput.length > 2 && (
             <div className="flex items-center justify-center py-16">
               <Loader2 className="animate-spin text-moss-500" size={32} />
             </div>
           )}
 
+          {/* Error state */}
+          {sessionError && (
+            <div className="rounded-xl border border-red-200 dark:border-red-800/50 bg-red-50 dark:bg-red-900/20 p-4 text-center">
+              <p className="text-sm text-red-600 dark:text-red-400 font-body">
+                Search failed — TheSession.org may be temporarily unavailable. Try again in a moment.
+              </p>
+            </div>
+          )}
+
           {/* Empty / initial state */}
-          {!sessionLoading && !sessionResults?.tunes?.length && (
+          {!sessionLoading && !sessionError && !sessionResults?.tunes?.length && (
             <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-parchment-300 dark:border-stone-700 py-16 text-center">
               <Search className="mb-3 text-moss-400 dark:text-moss-600" size={40} />
               <h3 className="font-display text-lg font-semibold text-stone-700 dark:text-stone-300">
-                {sessionSearch.length > 1 ? "No results found" : "Search TheSession.org"}
+                {sessionSearchInput.length > 2 ? "No results found" : "Search TheSession.org"}
               </h3>
               <p className="mt-1 max-w-sm text-sm text-stone-500 dark:text-stone-400 font-body">
-                {sessionSearch.length > 1
+                {sessionSearchInput.length > 2
                   ? "Try different search terms or tune type."
                   : "Find tunes from the world's largest collection of traditional music."}
               </p>
