@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { AuthClient } from "@icp-sdk/auth/client";
-import { HttpAgent } from "@icp-sdk/core/agent";
 import { safeGetCanisterEnv } from "@icp-sdk/core/agent/canister-env";
 import { createActor } from "./bindings/backend/backend";
 
@@ -33,18 +32,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }>();
 
   const createAuthenticatedActor = useCallback(
-    async (client: AuthClient) => {
+    (client: AuthClient) => {
       if (!canisterEnv) return null;
       const identity = client.getIdentity();
-      const agent = await HttpAgent.create({
-        host: agentHost,
-        identity,
-        verifyQuerySignatures: isMainnet,
+      return createActor(canisterEnv["PUBLIC_CANISTER_ID:backend"], {
+        agentOptions: {
+          host: agentHost,
+          identity,
+          verifyQuerySignatures: false,
+        },
       });
-      if (!isMainnet) {
-        await agent.fetchRootKey();
-      }
-      return createActor(canisterEnv["PUBLIC_CANISTER_ID:backend"], { agent });
     },
     [canisterEnv]
   );
@@ -57,8 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (authenticated) {
         const id = client.getIdentity();
         setPrincipal(id.getPrincipal().toText());
-        const actor = await createAuthenticatedActor(client);
-        setAuthenticatedBackend(actor);
+        setAuthenticatedBackend(createAuthenticatedActor(client));
       }
       setIsLoading(false);
     });
@@ -71,12 +67,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         canisterEnv?.["PUBLIC_CANISTER_ID:internet_identity"]
           ? `http://${canisterEnv["PUBLIC_CANISTER_ID:internet_identity"]}.localhost:8000`
           : "https://id.ai",
-      onSuccess: async () => {
+      onSuccess: () => {
         setIsAuthenticated(true);
         const id = authClient.getIdentity();
         setPrincipal(id.getPrincipal().toText());
-        const actor = await createAuthenticatedActor(authClient);
-        setAuthenticatedBackend(actor);
+        setAuthenticatedBackend(createAuthenticatedActor(authClient));
       },
     });
   }, [authClient, canisterEnv, createAuthenticatedActor]);
