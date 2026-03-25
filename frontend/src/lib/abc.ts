@@ -18,22 +18,52 @@ export function extractKey(abc: string): string | null {
 // Map ABC key field to clean display label
 export function formatKey(rawKey: string): string {
   const key = rawKey.trim();
-  const modeMap: Record<string, string> = {
-    maj: "Major",
-    min: "Minor",
-    mix: "Mixolydian",
-    dor: "Dorian",
-    phr: "Phrygian",
-    lyd: "Lydian",
-    loc: "Locrian",
+
+  // Handle full mode names (e.g., "Gmajor", "Aminor", "Ddorian")
+  const fullModeMap: Record<string, string> = {
+    major: "major",
+    minor: "minor",
+    mixolydian: "mixolydian",
+    dorian: "dorian",
+    phrygian: "phrygian",
+    lydian: "lydian",
+    locrian: "locrian",
   };
 
-  for (const [abbr, full] of Object.entries(modeMap)) {
-    if (key.toLowerCase().endsWith(abbr)) {
-      const root = key.slice(0, -abbr.length).trim();
-      return `${root} ${full}`;
+  // Handle abbreviated mode names (e.g., "Gmaj", "Amin", "Ddor")
+  const abbrModeMap: Record<string, string> = {
+    maj: "major",
+    min: "minor",
+    mix: "mixolydian",
+    dor: "dorian",
+    phr: "phrygian",
+    lyd: "lydian",
+    loc: "locrian",
+  };
+
+  const lower = key.toLowerCase();
+
+  // Check full names first (longer match)
+  for (const [suffix, mode] of Object.entries(fullModeMap)) {
+    if (lower.endsWith(suffix)) {
+      const root = key.slice(0, -suffix.length).trim();
+      return mode === "major" ? root : `${root} ${mode}`;
     }
   }
+
+  // Then abbreviations
+  for (const [suffix, mode] of Object.entries(abbrModeMap)) {
+    if (lower.endsWith(suffix)) {
+      const root = key.slice(0, -suffix.length).trim();
+      return mode === "major" ? root : `${root} ${mode}`;
+    }
+  }
+
+  // Handle "m" suffix for minor (e.g., "Am", "Em")
+  if (key.length <= 3 && key.endsWith("m")) {
+    return `${key.slice(0, -1)} minor`;
+  }
+
   return key;
 }
 
